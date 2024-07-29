@@ -1,95 +1,128 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import { About } from "@/components/About";
+import { ContactComponent } from "@/components/Contact";
+import { HomePage } from "@/components/HomePage";
+import { DrawerAppBar } from "@/components/Nav";
+import { SkillsComponent } from "@/components/Skills";
+import { FlexBox } from "@/components/styled/style";
+import { WorkComponent } from "@/components/Works";
+
+import Box from "@mui/material/Box/Box";
+
+import React from "react";
+import { useRef } from "react";
 
 export default function Home() {
+  const workRef = useRef<HTMLElement>(null);
+  const skillsRef = useRef<HTMLElement>(null);
+  const contactRef = useRef<HTMLElement>(null);
+  const aboutRef = useRef<HTMLElement>(null);
+
+  const handleNavItemClick = (item: string) => {
+    let scrollObject = {};
+    switch (item) {
+      case "Home":
+        scrollObject = {
+          top: 0,
+          behavior: "smooth",
+        };
+        break;
+      case "About":
+        scrollObject = {
+          top: aboutRef.current?.offsetTop! - 70,
+          behavior: "smooth",
+        };
+        break;
+      case "Work":
+        scrollObject = {
+          top: workRef.current?.offsetTop! - 70,
+          behavior: "smooth",
+        };
+        break;
+
+      case "Skills":
+        scrollObject = {
+          top: skillsRef.current?.offsetTop! - 70,
+          behavior: "smooth",
+        };
+        break;
+
+      case "Contact":
+        scrollObject = {
+          top: contactRef.current?.offsetTop! - 70,
+          behavior: "smooth",
+        };
+        break;
+
+      default:
+        break;
+    }
+
+    window.scrollTo(scrollObject);
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <>
+      <Box sx={{ bgcolor: "background.default" }}>
+        <DrawerAppBar onNavItemClick={handleNavItemClick} />
+        <Box
+          sx={(theme) => ({
+            width: "100%",
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "center",
+          })}
         >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+          <HomePage />
+        </Box>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+        <Box
+          ref={aboutRef}
+          sx={{
+            alignItems: "center",
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+            display: "flex",
+          }}
         >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
+          <About />
+        </Box>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Box
+          ref={workRef}
+          sx={{
+            alignItems: "center",
+            height: "100vh",
+            display: "flex",
+          }}
         >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+          <WorkComponent />
+        </Box>
+
+        <Box
+          ref={skillsRef}
+          sx={{
+            gap: { xs: 6, sm: 6, lg: 0 },
+          }}
+          px={2}
+        >
+          <SkillsComponent />
+        </Box>
+
+        <FlexBox
+          ref={contactRef}
+          justifyContent={"center"}
+          height={"100vh"}
+          alignItems={"center"}
+          alignContent={"center"}
+          sx={{
+            gap: { xs: 6, sm: 6, lg: 0 },
+          }}
+          px={2}
+        >
+          <ContactComponent />
+        </FlexBox>
+      </Box>
+    </>
   );
 }
